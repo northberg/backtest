@@ -4,30 +4,6 @@ import (
 	"github.com/northberg/candlestick"
 )
 
-type CollectionMeta struct {
-	Name       string          `json:"name"`
-	CreatedOn  int64           `json:"createdOn"`
-	Symbols    []string        `json:"symbols"`
-	StartBlock int64           `json:"startBlock"`
-	EndBlock   int64           `json:"endBlock"`
-	Bot        *BotParameters  `json:"bot"`
-	Statistics TradeStatistics `json:"statistics"`
-}
-
-type BotParameters struct {
-	Repository string      `json:"repository"`
-	Entry      string      `json:"entry"`
-	Scenarios  [][]float64 `json:"scenarios"`
-	Leverage   int         `json:"leverage"`
-	Segments   int64       `json:"segments"`
-}
-
-type ResultCollection struct {
-	Id      string                   `json:"id"`
-	Meta    CollectionMeta           `json:"meta"`
-	Symbols map[string]*SimResultSet `json:"symbols"`
-}
-
 type TradeStatistics struct {
 	WinRate            float64 `json:"winRate"`
 	ReturnOnInvestment float64 `json:"returnOnInvestment"`
@@ -38,25 +14,51 @@ type TradeStatistics struct {
 	FeeProfitRatio     float64 `json:"feeProfitRatio"`
 }
 
-type TradeMeta struct {
-	Statistics TradeStatistics `json:"statistics"`
+type MasterMeta struct {
+	Id         string          `json:"id"`
+	BotId      string          `json:"botId"`
+	Name       string          `json:"name"`
+	CreatedOn  int64           `json:"createdOn"`
+	Symbols    []string        `json:"symbols"`
+	Scenarios  [][]float64     `json:"scenarios"`
+	Leverage   int             `json:"leverage"`
+	Segments   int64           `json:"segments"`
 	StartBlock int64           `json:"startBlock"`
 	EndBlock   int64           `json:"endBlock"`
-	Symbol     string          `json:"symbol"`
+	Statistics TradeStatistics `json:"statistics"`
 }
 
-type SimResultSet struct {
-	Meta        TradeMeta     `json:"meta"`
-	Simulations []*SimResults `json:"simulations"`
+type MasterResult struct {
+	Symbols map[string]*SymbolResult `json:"symbols"`
+	Meta    MasterMeta               `json:"meta"`
 }
 
-type SimResults struct {
-	Meta      TradeMeta         `json:"meta"`
-	Segments  []*SegmentResults `json:"segments"`
+type SymbolMeta struct {
+	Statistics TradeStatistics `json:"statistics"`
+}
+
+type SymbolResult struct {
+	Meta      SymbolMeta        `json:"meta"`
+	Scenarios []*ScenarioResult `json:"simulations"`
+}
+
+type ScenarioMeta struct {
+	Statistics TradeStatistics `json:"statistics"`
+}
+
+type ScenarioResult struct {
+	Meta     ScenarioMeta      `json:"meta"`
+	Segments []*SegmentResults `json:"segments"`
+}
+
+type SegmentMeta struct {
+	StartBlock int64           `json:"startBlock"`
+	EndBlock   int64           `json:"endBlock"`
+	Statistics TradeStatistics `json:"statistics"`
 }
 
 type SegmentResults struct {
-	Meta   TradeMeta        `json:"meta"`
+	Meta   SegmentMeta      `json:"meta"`
 	Orders []*LogOrderEntry `json:"orders"`
 	Trades []*LogTradeEntry `json:"trades"`
 }
