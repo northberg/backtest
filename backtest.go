@@ -38,8 +38,8 @@ type SymbolMeta struct {
 }
 
 type SymbolResult struct {
+	Scenarios []*ScenarioResult `json:"scenarios"`
 	Meta      SymbolMeta        `json:"meta"`
-	Scenarios []*ScenarioResult `json:"simulations"`
 }
 
 type ScenarioMeta struct {
@@ -47,8 +47,8 @@ type ScenarioMeta struct {
 }
 
 type ScenarioResult struct {
-	Meta     ScenarioMeta      `json:"meta"`
-	Segments []*SegmentResults `json:"segments"`
+	Segments []*SegmentResult `json:"segments"`
+	Meta     ScenarioMeta     `json:"meta"`
 }
 
 type SegmentMeta struct {
@@ -57,7 +57,7 @@ type SegmentMeta struct {
 	Statistics TradeStatistics `json:"statistics"`
 }
 
-type SegmentResults struct {
+type SegmentResult struct {
 	Meta   SegmentMeta      `json:"meta"`
 	Orders []*LogOrderEntry `json:"orders"`
 	Trades []*LogTradeEntry `json:"trades"`
