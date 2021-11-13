@@ -64,23 +64,25 @@ type SegmentResult struct {
 }
 
 type LogOrderEntry struct {
-	Id        string                `json:"id"`
-	TimeStamp int64                 `json:"timeStamp"`
-	Side      candlestick.OrderSide `json:"side"`
-	Type      candlestick.OrderKind `json:"type"`
-	Price     float64               `json:"price"`
-	Amount    float64               `json:"amount"`
+	Id        string                   `json:"id"`
+	TimeStamp int64                    `json:"timeStamp"`
+	Side      candlestick.OrderSide    `json:"side"`
+	Type      candlestick.OrderKind    `json:"type"`
+	Hedge     candlestick.PositionSide `json:"hedge"`
+	Price     float64                  `json:"price"`
+	Amount    float64                  `json:"amount"`
 }
 
 type LogTradeEntry struct {
-	Id        string                `json:"id"`
-	TimeStamp int64                 `json:"timeStamp"`
-	Side      candlestick.OrderSide `json:"side"`
-	Type      candlestick.OrderKind `json:"type"`
-	Price     float64               `json:"price"`
-	Amount    float64               `json:"amount"`
-	Realized  float64               `json:"realized"`
-	Fees      float64               `json:"fees"`
-	Position  float64               `json:"position"`
-	Entry     float64               `json:"entry"`
+	Id        string                   `json:"id"`
+	TimeStamp int64                    `json:"timeStamp"`
+	Side      candlestick.OrderSide    `json:"side"`
+	Type      candlestick.OrderKind    `json:"type"`
+	Hedge     candlestick.PositionSide `json:"hedge"`
+	Price     float64                  `json:"price"`
+	Amount    float64                  `json:"amount"`
+	Realized  float64                  `json:"realized"`
+	Fees      float64                  `json:"fees"`
+	Position  float64                  `json:"position"`
+	Entry     float64                  `json:"entry"`
 }
