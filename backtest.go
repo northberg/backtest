@@ -81,4 +81,6 @@ type LogTradeEntry struct {
 	Amount    float64               `json:"amount"`
 	Realized  float64               `json:"realized"`
 	Fees      float64               `json:"fees"`
+	Position  float64               `json:"position"`
+	Entry     float64               `json:"entry"`
 }
