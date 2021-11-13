@@ -52,7 +52,6 @@ type SimResultSet struct {
 
 type SimResults struct {
 	Meta      TradeMeta         `json:"meta"`
-	Scenarios [][]float64       `json:"scenarios"`
 	Segments  []*SegmentResults `json:"segments"`
 }
 
