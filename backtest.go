@@ -5,10 +5,13 @@ import (
 )
 
 type CollectionMeta struct {
-	Symbols    []string       `json:"symbols"`
-	StartBlock int64          `json:"startBlock"`
-	EndBlock   int64          `json:"endBlock"`
-	Bot        *BotParameters `json:"bot"`
+	Name       string          `json:"name"`
+	CreatedOn  int64           `json:"createdOn"`
+	Symbols    []string        `json:"symbols"`
+	StartBlock int64           `json:"startBlock"`
+	EndBlock   int64           `json:"endBlock"`
+	Bot        *BotParameters  `json:"bot"`
+	Statistics TradeStatistics `json:"statistics"`
 }
 
 type BotParameters struct {
@@ -48,33 +51,33 @@ type SimResultSet struct {
 }
 
 type SimResults struct {
-	Meta      TradeMeta `json:"meta"`
-	Scenarios [][]float64
+	Meta      TradeMeta         `json:"meta"`
+	Scenarios [][]float64       `json:"scenarios"`
 	Segments  []*SegmentResults `json:"segments"`
 }
 
 type SegmentResults struct {
-	Meta   TradeMeta
+	Meta   TradeMeta        `json:"meta"`
 	Orders []*LogOrderEntry `json:"orders"`
 	Trades []*LogTradeEntry `json:"trades"`
 }
 
 type LogOrderEntry struct {
-	Id        string
-	TimeStamp int64
-	Side      candlestick.OrderSide
-	Type      candlestick.OrderKind
-	Price     float64
-	Amount    float64
+	Id        string                `json:"id"`
+	TimeStamp int64                 `json:"timeStamp"`
+	Side      candlestick.OrderSide `json:"side"`
+	Type      candlestick.OrderKind `json:"type"`
+	Price     float64               `json:"price"`
+	Amount    float64               `json:"amount"`
 }
 
 type LogTradeEntry struct {
-	Id        string
-	TimeStamp int64
-	Side      candlestick.OrderSide
-	Type      candlestick.OrderKind
-	Price     float64
-	Amount    float64
-	Realized  float64
-	Fees      float64
+	Id        string                `json:"id"`
+	TimeStamp int64                 `json:"timeStamp"`
+	Side      candlestick.OrderSide `json:"side"`
+	Type      candlestick.OrderKind `json:"type"`
+	Price     float64               `json:"price"`
+	Amount    float64               `json:"amount"`
+	Realized  float64               `json:"realized"`
+	Fees      float64               `json:"fees"`
 }
