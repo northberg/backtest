@@ -5,13 +5,13 @@ import (
 )
 
 type TradeStatistics struct {
-	WinRate            float64 `json:"winRate"`
-	ReturnOnInvestment float64 `json:"returnOnInvestment"`
-	ProfitPerTrade     float64 `json:"profitPerTrade"`
-	NumberOfTrades     int     `json:"numberOfTrades"`
-	EntryExitRatio     float64 `json:"entryExitRatio"`
-	ProfitAndLoss      float64 `json:"profitAndLoss"`
-	FeeProfitRatio     float64 `json:"feeProfitRatio"`
+	WinRate        float64 `json:"winRate"`
+	NumberOfTrades int     `json:"numberOfTrades"`
+	EntryExitRatio float64 `json:"entryExitRatio"`
+	ProfitPerTrade float64 `json:"profitPerTrade"`
+	Realized       float64 `json:"realized"`
+	Unrealized     float64 `json:"unrealized"`
+	FeeProfitRatio float64 `json:"feeProfitRatio"`
 }
 
 type MasterMeta struct {
