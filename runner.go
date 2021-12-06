@@ -3,7 +3,6 @@ package backtest
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -55,18 +54,18 @@ func (r *BotRunner) handleExit() {
 
 func (r *BotRunner) updateStatus(status string) {
 	r.Owner.Status = status
-	fmt.Printf("[%s] %s\n", r.Owner.Name, status)
+	log.Printf("[%s] %s\n", r.Owner.Name, status)
 }
 
 func (r *BotRunner) Launch(dst string) {
 
 	if r.Port == 0 {
-		log.Fatalln("port is not set")
+		log.Fatalln("invalid port")
 	}
 
 	// check if no process exists
 	if r.Cmd != nil {
-		log.Fatalf("bot was already running: %s\n", r.Owner.Id)
+		log.Fatalf("[%s] bot was already running\n", r.Owner.Id)
 		return
 	}
 
@@ -170,7 +169,7 @@ func (r *BotRunner) Launch(dst string) {
 		r.handleError(err, "Could not start")
 		return
 	}
-	fmt.Printf("Starting \"%s\"\n", owner.Name)
+	log.Printf("[%s] Starting\n", owner.Name)
 
 	// keep track of process termination state
 	go func() {
@@ -178,12 +177,12 @@ func (r *BotRunner) Launch(dst string) {
 		if err != nil {
 			switch err.(type) {
 			default:
-				fmt.Printf("unexpected bot exit: %s\n", err.Error())
+				log.Printf("unexpected bot exit: %s\n", err.Error())
 			case *exec.ExitError:
 				break
 			}
 		}
-		fmt.Printf("\"%s\" exited", owner.Name)
+		log.Printf("[%s] Bye\n", owner.Name)
 		r.handleExit()
 	}()
 
@@ -201,12 +200,11 @@ func (r *BotRunner) Launch(dst string) {
 		}
 	}
 
-	fmt.Printf("\"%s\" is running\n", owner.Name)
+	log.Printf("[%s] Started\n", owner.Name)
 }
 
 func (r *BotRunner) Heartbeat() bool {
 	_, err := http.Get("http://localhost:" + strconv.Itoa(r.Port) + "/heartbeat")
-	fmt.Print(err)
 	return err == nil
 }
 
@@ -217,7 +215,7 @@ func (r *BotRunner) Kill() {
 	for {
 		err := r.Cmd.Process.Kill()
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 		for i := 0; i < 10; i++ {
 			time.Sleep(150 * time.Millisecond)
@@ -225,6 +223,6 @@ func (r *BotRunner) Kill() {
 				return
 			}
 		}
-		fmt.Printf("failed to kill process \"%s\", trying again...\n", r.Owner.Name)
+		log.Printf("[%s] Failed to kill\n", r.Owner.Id)
 	}
 }
