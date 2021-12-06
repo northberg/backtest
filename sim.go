@@ -20,7 +20,6 @@ type SimMetrics struct {
 
 type SimConfig struct {
 	Version   BotVersion  `json:"version"`
-	Label     string      `json:"description"`
 	Start     int64       `json:"startBlock"`
 	End       int64       `json:"endBlock"`
 	Symbols   []string    `json:"symbols"`
