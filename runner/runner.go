@@ -1,8 +1,9 @@
-package backtest
+package runner
 
 import (
 	"bytes"
 	"errors"
+	"github.com/northberg/backtest"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +13,7 @@ import (
 	"time"
 )
 
-func NewRunnable(instance *BotInstance, version *BotVersion, port int) *BotRunner {
+func NewRunnable(instance *backtest.BotInstance, version *backtest.BotVersion, port int) *BotRunner {
 	return &BotRunner{
 		Version:    version,
 		Owner:      instance,
@@ -25,8 +26,8 @@ func NewRunnable(instance *BotInstance, version *BotVersion, port int) *BotRunne
 }
 
 type BotRunner struct {
-	Version    *BotVersion
-	Owner      *BotInstance
+	Version    *backtest.BotVersion
+	Owner      *backtest.BotInstance
 	Cmd        *exec.Cmd
 	Log        *bytes.Buffer
 	Port       int
@@ -121,7 +122,7 @@ func (r *BotRunner) Launch(dst string) {
 	}
 	outParts := strings.Split(string(out), ":=:=:")
 	r.Version.Commit = outParts[0]
-	r.Version.Description = outParts[1]
+	r.Version.Description = strings.ReplaceAll(outParts[1], "\n", " ")
 
 	// remove existing build if present
 	if _, err = os.Stat(runDir); !os.IsNotExist(err) {
@@ -182,7 +183,7 @@ func (r *BotRunner) Launch(dst string) {
 				break
 			}
 		}
-		log.Printf("[%s] Bye\n", owner.Name)
+		log.Printf("[%s] Finished\n", owner.Name)
 		r.handleExit()
 	}()
 
