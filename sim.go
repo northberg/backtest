@@ -1,5 +1,13 @@
 package backtest
 
+type Simulation struct {
+	Config     *SimConfig    `json:"config"`
+	Instance   *BotInstance  `json:"instance"`
+	LastMetric *SimMetrics   `json:"lastMetric"`
+	Results    *MasterResult `json:"results"`
+	Candidate  bool          `json:"candidate"`
+}
+
 type SimMetrics struct {
 	Elapsed      int64 `json:"elapsed"`
 	StartTime    int64 `json:"startTime"`
@@ -11,7 +19,8 @@ type SimMetrics struct {
 }
 
 type SimConfig struct {
-	BotId     string      `json:"botId"`
+	Version   BotVersion  `json:"version"`
+	Label     string      `json:"description"`
 	Start     int64       `json:"startBlock"`
 	End       int64       `json:"endBlock"`
 	Symbols   []string    `json:"symbols"`
