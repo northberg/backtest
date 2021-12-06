@@ -1,20 +1,20 @@
 package backtest
 
-type BotMetrics struct {
-	Elapsed      int64 `json:"elapsed"`
-	StartTime    int64 `json:"startTime"`
-	TotalBlocks  int   `json:"totalBlocks"`
-	Progress     int   `json:"progress"`
-	Finished     bool  `json:"finished"`
-	CurrentBlock int   `json:"currentBlock"`
-	Running      bool  `json:"running"`
+type BotConfig struct {
+	BotId      string    `json:"botId"`
+	Funds      float64   `json:"funds"`
+	Symbols    []string  `json:"symbols"`
+	Parameters []float64 `json:"parameters"`
+	Leverage   int       `json:"leverage"`
 }
 
-type BotRunVariables struct {
-	Start     int64       `json:"startBlock"`
-	End       int64       `json:"endBlock"`
-	Segments  int64       `json:"segments"`
-	Symbols   []string    `json:"symbols"`
-	Scenarios [][]float64 `json:"scenarios"`
-	Leverage  int         `json:"leverage"`
+type BotInstance struct {
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	CreatedOn int64  `json:"createdOn"`
+	StartTime int64  `json:"startTime"`
+	StopTime  int64  `json:"stopTime"`
+	Status    string `json:"status"`
+	Log       string `json:"log"`
+	Error     string `json:"error"`
 }
