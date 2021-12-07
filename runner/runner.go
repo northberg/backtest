@@ -115,7 +115,7 @@ func (r *BotRunner) Launch(dst string) {
 
 	// Extract the latest commit hash
 	cmd := exec.Command("git", "log", "-1", "--pretty=%H:=:=:%B")
-	cmd.Dir = dst
+	cmd.Dir = runDir
 	out, err := cmd.Output()
 	if err != nil {
 		r.handleError(err, "Could not retrieve version")
