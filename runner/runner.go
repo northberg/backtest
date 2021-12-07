@@ -115,6 +115,7 @@ func (r *BotRunner) Launch(dst string) {
 
 	// Extract the latest commit hash
 	cmd := exec.Command("git", "log", "-1", "--pretty=%H:=:=:%B")
+	cmd.Dir = dst
 	out, err := cmd.Output()
 	if err != nil {
 		r.handleError(err, "Could not retrieve version")
@@ -170,7 +171,6 @@ func (r *BotRunner) Launch(dst string) {
 		r.handleError(err, "Could not start")
 		return
 	}
-	log.Printf("[%s] Starting\n", owner.Name)
 
 	// keep track of process termination state
 	go func() {
