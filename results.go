@@ -29,8 +29,8 @@ type MasterMeta struct {
 }
 
 type MasterResult struct {
-	Symbols map[string]*SymbolResult `json:"symbols"`
-	Meta    MasterMeta               `json:"meta"`
+	Scenarios []*ScenarioResult `json:"scenarios"`
+	Meta      MasterMeta        `json:"meta"`
 }
 
 type SymbolMeta struct {
@@ -38,8 +38,8 @@ type SymbolMeta struct {
 }
 
 type SymbolResult struct {
-	Scenarios []*ScenarioResult `json:"scenarios"`
-	Meta      SymbolMeta        `json:"meta"`
+	Segments []*SegmentResult `json:"segments"`
+	Meta     SymbolMeta       `json:"meta"`
 }
 
 type ScenarioMeta struct {
@@ -47,8 +47,8 @@ type ScenarioMeta struct {
 }
 
 type ScenarioResult struct {
-	Segments []*SegmentResult `json:"segments"`
-	Meta     ScenarioMeta     `json:"meta"`
+	Symbols map[string]*SymbolResult `json:"symbols"`
+	Meta    ScenarioMeta             `json:"meta"`
 }
 
 type SegmentMeta struct {
