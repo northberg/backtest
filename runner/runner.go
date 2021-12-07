@@ -55,7 +55,7 @@ func (r *BotRunner) handleExit() {
 
 func (r *BotRunner) updateStatus(status string) {
 	r.Owner.Status = status
-	log.Printf("[%s] %s\n", r.Owner.Name, status)
+	log.Printf("[%s] %s\n", r.Owner.Id, status)
 }
 
 func (r *BotRunner) Launch(dst string) {
@@ -183,7 +183,7 @@ func (r *BotRunner) Launch(dst string) {
 				break
 			}
 		}
-		log.Printf("[%s] Finished\n", owner.Name)
+		log.Printf("[%s] Finished\n", owner.Id)
 		r.handleExit()
 	}()
 
@@ -201,7 +201,7 @@ func (r *BotRunner) Launch(dst string) {
 		}
 	}
 
-	log.Printf("[%s] Started\n", owner.Name)
+	log.Printf("[%s] Started\n", owner.Id)
 }
 
 func (r *BotRunner) Heartbeat() bool {
