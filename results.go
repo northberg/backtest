@@ -35,6 +35,7 @@ type MasterResult struct {
 
 type SymbolMeta struct {
 	Statistics TradeStatistics `json:"statistics"`
+	Symbol     string          `json:"symbol"`
 }
 
 type SymbolResult struct {
