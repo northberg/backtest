@@ -44,6 +44,7 @@ type SymbolResult struct {
 
 type ScenarioMeta struct {
 	Statistics TradeStatistics `json:"statistics"`
+	Parameters []float64       `json:"parameters"`
 }
 
 type ScenarioResult struct {
