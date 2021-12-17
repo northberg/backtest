@@ -1,6 +1,9 @@
 package backtest
 
-import cs "github.com/northberg/candlestick"
+import (
+	cs "github.com/northberg/candlestick"
+	"time"
+)
 
 type BotConfig struct {
 	Version    BotVersion `json:"version"`
@@ -25,6 +28,28 @@ type BotRunLog struct {
 	Error     string `json:"error"`
 }
 
+func (l *BotRunLog) HasError() bool {
+	return l.Error != ""
+}
+
+func (l *BotRunLog) Elapsed() int64 {
+	if l.StopTime == 0 {
+		return time.Now().UTC().Unix() - l.StartTime
+	} else {
+		return l.StopTime - l.StartTime
+	}
+}
+
+func NewBotInstance(id string, name string) *BotInstance {
+	return &BotInstance{
+		Id:        id,
+		Name:      name,
+		Status:    "",
+		CreatedOn: time.Now().Unix(),
+		Logs:      make([]*BotRunLog, 0),
+	}
+}
+
 type BotInstance struct {
 	Id        string       `json:"id"`
 	Name      string       `json:"name"`
@@ -38,6 +63,13 @@ func (i *BotInstance) LastLog() *BotRunLog {
 		return nil
 	}
 	return i.Logs[len(i.Logs)-1]
+}
+
+func (i *BotInstance) NewRun() *BotRunLog {
+	logger := new(BotRunLog)
+	logger.StartTime = time.Now().UTC().Unix()
+	i.Logs = append(i.Logs, logger)
+	return logger
 }
 
 type TradeState struct {
