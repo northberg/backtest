@@ -45,7 +45,7 @@ func NewBotInstance(id string, name string) *BotInstance {
 		Id:        id,
 		Name:      name,
 		Status:    "",
-		CreatedOn: time.Now().Unix(),
+		CreatedOn: time.Now().UTC().Unix(),
 		Logs:      make([]*BotRunLog, 0),
 	}
 }

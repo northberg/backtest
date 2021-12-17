@@ -13,11 +13,10 @@ import (
 	"time"
 )
 
-func NewRunnable(instance *bt.BotInstance, logger *bt.BotRunLog, version *bt.BotVersion, port int) *BotRunner {
+func NewRunnable(instance *bt.BotInstance, version *bt.BotVersion, port int) *BotRunner {
 	return &BotRunner{
 		Version:    version,
 		Owner:      instance,
-		Logger:     logger,
 		Cmd:        nil,
 		Output:     &bytes.Buffer{},
 		Port:       port,
@@ -36,7 +35,7 @@ const (
 type BotRunner struct {
 	Version    *bt.BotVersion
 	Owner      *bt.BotInstance
-	Logger     *bt.BotRunLog
+	logger     *bt.BotRunLog
 	Cmd        *exec.Cmd
 	Output     *bytes.Buffer
 	Port       int
@@ -50,14 +49,16 @@ func (r *BotRunner) handleError(err error, status string) {
 		err = errors.New(status)
 	}
 	r.Error = err
-	r.Logger.Error = r.Error.Error()
-	r.Logger.Output = r.Output.String()
+	r.logger.Error = r.Error.Error()
+	r.logger.Output = r.Output.String()
+	r.logger.StopTime = time.Now().UTC().Unix()
 	r.Cmd = nil
 	r.Terminated = true
 }
 
 func (r *BotRunner) handleExit() {
-	r.Logger.Output = r.Output.String()
+	r.logger.Output = r.Output.String()
+	r.logger.StopTime = time.Now().UTC().Unix()
 	r.Cmd = nil
 	r.Terminated = true
 }
@@ -78,6 +79,8 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 		log.Fatalf("[%s] bot was already running\n", r.Owner.Id)
 		return
 	}
+
+	r.logger = r.Owner.NewRun()
 
 	runName := r.Owner.Id
 	botId := r.Version.Id
