@@ -3,7 +3,7 @@ package runner
 import (
 	"bytes"
 	"errors"
-	"github.com/northberg/backtest"
+	bt "github.com/northberg/backtest"
 	"log"
 	"net/http"
 	"os"
@@ -13,12 +13,13 @@ import (
 	"time"
 )
 
-func NewRunnable(instance *backtest.BotRunLog, version *backtest.BotVersion, port int) *BotRunner {
+func NewRunnable(instance *bt.BotInstance, logger *bt.BotRunLog, version *bt.BotVersion, port int) *BotRunner {
 	return &BotRunner{
 		Version:    version,
 		Owner:      instance,
+		Logger:     logger,
 		Cmd:        nil,
-		Log:        &bytes.Buffer{},
+		Output:     &bytes.Buffer{},
 		Port:       port,
 		Terminated: false,
 		Error:      nil,
@@ -33,10 +34,11 @@ const (
 )
 
 type BotRunner struct {
-	Version    *backtest.BotVersion
-	Owner      *backtest.BotRunLog
+	Version    *bt.BotVersion
+	Owner      *bt.BotInstance
+	Logger     *bt.BotRunLog
 	Cmd        *exec.Cmd
-	Log        *bytes.Buffer
+	Output     *bytes.Buffer
 	Port       int
 	Terminated bool
 	Error      error
@@ -48,14 +50,14 @@ func (r *BotRunner) handleError(err error, status string) {
 		err = errors.New(status)
 	}
 	r.Error = err
-	r.Owner.Error = r.Error.Error()
-	r.Owner.Output = r.Log.String()
+	r.Logger.Error = r.Error.Error()
+	r.Logger.Output = r.Output.String()
 	r.Cmd = nil
 	r.Terminated = true
 }
 
 func (r *BotRunner) handleExit() {
-	r.Owner.Output = r.Log.String()
+	r.Logger.Output = r.Output.String()
 	r.Cmd = nil
 	r.Terminated = true
 }
@@ -89,8 +91,8 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 
 		// run clone
 		cmd := exec.Command("git", "clone", "git@github.com:northberg/nbb-"+botId)
-		cmd.Stderr = r.Log
-		cmd.Stdout = r.Log
+		cmd.Stderr = r.Output
+		cmd.Stdout = r.Output
 		cmd.Dir = dst
 		err = cmd.Run()
 
@@ -107,8 +109,8 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 
 		// run pull
 		cmd := exec.Command("git", "pull")
-		cmd.Stderr = r.Log
-		cmd.Stdout = r.Log
+		cmd.Stderr = r.Output
+		cmd.Stdout = r.Output
 		cmd.Dir = runDir
 		err = cmd.Run()
 
@@ -166,8 +168,8 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 	cmd.Env = append(os.Environ(), "PORT="+strconv.Itoa(r.Port))
 
 	// link output buffers
-	cmd.Stdout = r.Log
-	cmd.Stderr = r.Log
+	cmd.Stdout = r.Output
+	cmd.Stderr = r.Output
 
 	// save
 	r.Cmd = cmd
