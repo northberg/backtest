@@ -33,6 +33,13 @@ type BotInstance struct {
 	Logs      []*BotRunLog `json:"logs"`
 }
 
+func (i *BotInstance) LastLog() *BotRunLog {
+	if len(i.Logs) == 0 {
+		return nil
+	}
+	return i.Logs[len(i.Logs)-1]
+}
+
 type TradeState struct {
 	InstanceId string            `json:"instanceId"`
 	StateId    string            `json:"stateId"`
