@@ -2,6 +2,7 @@ package backtest
 
 import (
 	cs "github.com/northberg/candlestick"
+	"strconv"
 	"time"
 )
 
@@ -67,6 +68,7 @@ func (i *BotInstance) LastLog() *BotRunLog {
 
 func (i *BotInstance) NewRun() *BotRunLog {
 	logger := new(BotRunLog)
+	logger.Id = i.Id + ":" + strconv.Itoa(len(i.Logs))
 	logger.StartTime = time.Now().UTC().Unix()
 	i.Logs = append(i.Logs, logger)
 	return logger
