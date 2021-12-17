@@ -21,7 +21,6 @@ type BotRunLog struct {
 	Id        string `json:"id"`
 	StartTime int64  `json:"startTime"`
 	StopTime  int64  `json:"stopTime"`
-	Status    string `json:"status"`
 	Output    string `json:"output"`
 	Error     string `json:"error"`
 }
@@ -29,6 +28,7 @@ type BotRunLog struct {
 type BotInstance struct {
 	Id        string       `json:"id"`
 	Name      string       `json:"name"`
+	Status    string       `json:"status"`
 	CreatedOn int64        `json:"createdOn"`
 	Logs      []*BotRunLog `json:"logs"`
 }
