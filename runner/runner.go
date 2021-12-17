@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func NewRunnable(instance *backtest.BotInstance, version *backtest.BotVersion, port int) *BotRunner {
+func NewRunnable(instance *backtest.BotRunLog, version *backtest.BotVersion, port int) *BotRunner {
 	return &BotRunner{
 		Version:    version,
 		Owner:      instance,
@@ -34,7 +34,7 @@ const (
 
 type BotRunner struct {
 	Version    *backtest.BotVersion
-	Owner      *backtest.BotInstance
+	Owner      *backtest.BotRunLog
 	Cmd        *exec.Cmd
 	Log        *bytes.Buffer
 	Port       int
@@ -49,13 +49,13 @@ func (r *BotRunner) handleError(err error, status string) {
 	}
 	r.Error = err
 	r.Owner.Error = r.Error.Error()
-	r.Owner.Log = r.Log.String()
+	r.Owner.Output = r.Log.String()
 	r.Cmd = nil
 	r.Terminated = true
 }
 
 func (r *BotRunner) handleExit() {
-	r.Owner.Log = r.Log.String()
+	r.Owner.Output = r.Log.String()
 	r.Cmd = nil
 	r.Terminated = true
 }
@@ -77,7 +77,7 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 		return
 	}
 
-	owner := r.Owner
+	runName := r.Owner.Id
 	botId := r.Version.Id
 	runDir := dst + "/nbb-" + botId
 
@@ -190,7 +190,7 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 				break
 			}
 		}
-		log.Printf("[%s] Finished\n", owner.Id)
+		log.Printf("[%s] Finished\n", runName)
 		r.handleExit()
 	}()
 
@@ -208,7 +208,7 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 		}
 	}
 
-	log.Printf("[%s] Started\n", owner.Id)
+	log.Printf("[%s] Started\n", runName)
 }
 
 func (r *BotRunner) Heartbeat() bool {
