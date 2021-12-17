@@ -18,7 +18,6 @@ type BotVersion struct {
 }
 
 type BotRunLog struct {
-	Id        string `json:"id"`
 	StartTime int64  `json:"startTime"`
 	StopTime  int64  `json:"stopTime"`
 	Status    string `json:"status"`
@@ -27,6 +26,7 @@ type BotRunLog struct {
 }
 
 type BotInstance struct {
+	Id        string       `json:"id"`
 	Name      string       `json:"name"`
 	CreatedOn int64        `json:"createdOn"`
 	Logs      []*BotRunLog `json:"logs"`
