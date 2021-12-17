@@ -18,6 +18,7 @@ type BotVersion struct {
 }
 
 type BotRunLog struct {
+	Id        string `json:"id"`
 	StartTime int64  `json:"startTime"`
 	StopTime  int64  `json:"stopTime"`
 	Status    string `json:"status"`
