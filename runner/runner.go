@@ -25,6 +25,13 @@ func NewRunnable(instance *backtest.BotInstance, version *backtest.BotVersion, p
 	}
 }
 
+type BotMode = string
+
+const (
+	SimMode  = BotMode("sim")
+	LiveMode = BotMode("live")
+)
+
 type BotRunner struct {
 	Version    *backtest.BotVersion
 	Owner      *backtest.BotInstance
@@ -58,7 +65,7 @@ func (r *BotRunner) updateStatus(status string) {
 	log.Printf("[%s] %s\n", r.Owner.Id, status)
 }
 
-func (r *BotRunner) Launch(dst string) {
+func (r *BotRunner) Launch(dst string, mode BotMode) {
 
 	if r.Port == 0 {
 		log.Fatalln("invalid port")
@@ -154,7 +161,7 @@ func (r *BotRunner) Launch(dst string) {
 
 	// setup process
 	r.updateStatus("Starting")
-	cmd = exec.Command("./bot")
+	cmd = exec.Command("./bot", mode)
 	cmd.Dir = runDir + "/build"
 	cmd.Env = append(os.Environ(), "PORT="+strconv.Itoa(r.Port))
 
