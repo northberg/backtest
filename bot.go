@@ -83,7 +83,7 @@ type TradeState struct {
 	Symbol     string            `json:"symbol"`
 	Time       int64             `json:"time"`
 	Parameters []float64         `json:"parameters"`
-	Memory     Memory            `json:"memory"`
+	Memory     *Memory           `json:"memory"`
 	Leverage   int               `json:"leverage"`
 	Position   cs.HedgedPosition `json:"position"`
 }
