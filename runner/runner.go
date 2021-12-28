@@ -155,10 +155,10 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 
 	// build new version
 	r.updateStatus("Compiling")
-	var compileBuffer bytes.Buffer
 	cmd = exec.Command("go", "build", "-o", "./build/bot", "./cmd/bot")
 	cmd.Dir = runDir
-	cmd.Stderr = &compileBuffer
+	cmd.Stderr = r.Output
+	cmd.Stdout = r.Output
 	if err = cmd.Run(); err != nil {
 		r.handleError(err, "Compilation failed")
 		return
@@ -169,8 +169,6 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 	cmd = exec.Command("./bot", mode)
 	cmd.Dir = runDir + "/build"
 	cmd.Env = append(os.Environ(), "PORT="+strconv.Itoa(r.Port))
-
-	// link output buffers
 	cmd.Stdout = r.Output
 	cmd.Stderr = r.Output
 
