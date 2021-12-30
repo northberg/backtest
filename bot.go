@@ -76,6 +76,7 @@ func (i *BotInstance) NewRun() *BotRunLog {
 
 type TradeState struct {
 	InstanceId string            `json:"instanceId"`
+	BotId      string            `json:"botId"`
 	StateId    string            `json:"stateId"`
 	LastFill   float64           `json:"lastFill"`
 	Balance    float64           `json:"balance"`
