@@ -40,6 +40,7 @@ type BotRunner struct {
 	Output     *bytes.Buffer
 	Port       int
 	Terminated bool
+	Ready      bool
 	Error      error
 }
 
@@ -213,6 +214,7 @@ func (r *BotRunner) Launch(dst string, mode BotMode) {
 		}
 	}
 
+	r.Ready = true
 	log.Printf("[%s] Started\n", runName)
 }
 
